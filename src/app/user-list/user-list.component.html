@@ -1,0 +1,35 @@
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 offset-3 float-md-center">
+
+<div class="userPanel">
+ <!-- searchbar -->
+ <form class="form-inline my-2 my-lg-0">
+  <input class="form-control mr-sm-2" type="text" name="search" [(ngModel)]="searchText" placeholder="Search in database"  >
+  <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+</form>
+<!-- table -->
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">Date of birth</th>
+      <th scope="col">Is infected</th>
+      <th scope="col">Has been in contact with</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users| filter:searchText">
+      <td>{{user.ID}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.dateOfBirth}}</td>
+      <td>{{user.isInfected?'Yes':'No'}}</td>
+      <td>{{user.hasBeenInContactWith}}</td>
+    </tr>
+    
+  </tbody>
+</table>
+</div>
+ 
+
