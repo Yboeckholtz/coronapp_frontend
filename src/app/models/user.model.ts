@@ -15,3 +15,4 @@ export class User {
         this.hasBeenInContactWith = hasBeenInContactWith;
     }
 }
+

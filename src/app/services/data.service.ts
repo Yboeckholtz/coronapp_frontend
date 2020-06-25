@@ -6,9 +6,11 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class DataService {
 
-  constructor(private httpclient: HttpClient) { }
+  apiUrl = "https://coronapp-api.herokuapp.com/getAllUsers";
+  
+  constructor(private _http: HttpClient) { }
 
   getUsers(): Observable<any> {
-    return this.httpclient.get("http://jsonplaceholder.typicode.com/users")
+    return this._http.get<User[]>(this.apiUrl);
   }
 }
