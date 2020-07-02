@@ -14,7 +14,6 @@ import { OverviewComponent } from './overview/overview.component';
 import { DataService } from './services/data.service';
 import { RegisterComponent } from './user/register/register.component';
 import { LoginComponent } from './user/login/login.component';
-
 @NgModule({
   declarations: [
     AppComponent,
