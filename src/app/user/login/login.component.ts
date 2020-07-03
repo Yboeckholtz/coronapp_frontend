@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {FormControl, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import { Location } from "@angular/common";
+import { AuthService } from "../../services/auth.service";
+
 
 @Component({
   selector: 'app-login',
@@ -9,20 +12,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  profileForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+});
 
-  isLoginError : boolean = false;
-  constructor(private userService : UserService, private router: Router) { }
-
+  constructor(private userService : UserService, private router: Router, private route: ActivatedRoute, private authService: AuthService, private location: Location) { }
+  
   ngOnInit(): void {
   }
 
- onSubmit(userName, password){
-    this.userService.userAuthentication(userName, password).subscribe((data : any)=> {
-      localStorage.setItem('userToken', data.access_token);
-      this.router.navigate(['/home'])
-    },
-    (err: HttpErrorResponse)=>{
-      this.isLoginError = true;
-    });
- }
+
+
+onSubmit() {
+  let username = this.profileForm.controls.username.value;
+  let password = this.profileForm.controls.password.value;
+  this.authService.loginUser(username, password);
+  this.router.navigate(["/overview"]);
+  // this.authService.loginUser(this.profileForm.controls['username'].value, this.profileForm.controls['password'].value);
+}
 }

@@ -2,18 +2,23 @@
   <i class="material-icons">error</i> Incorrect username or password
 </div> -->
 
-  <body class="text-center">
-    <form #loginForm="ngForm" id="loginForm" (ngSubmit)="onSubmit(userName.value, password.value)">
-      <img class="mb-4" src="https://www.novak.nl/wp-content/uploads/2020/06/corona_logo_v3-e1591348149940.png" alt="" width="102" height="102">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-      <input type="text" #userName ngModel name="userName" class="form-control" placeholder="Username" required>
-      <input type="password" #password ngModel name ="password" class="form-control" placeholder="Password" required>
-      
-      <button class="btn btn-lg btn-primary btn-block" type="submit" (ngSubmit)="onSubmit(userName.value, password.value)">Sign in</button>
-     
-     
-     
-      <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
-    </form>
-  </body>
+<body class="text-center">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="loginForm">
+    <img class="mb-4" src="https://www.novak.nl/wp-content/uploads/2020/06/corona_logo_v3-e1591348149940.png" alt="" width="102" height="102">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label>
+      <input type="text" formControlName="username" placeholder="Username" required>
+    </label>
+   
+    <label>
+      <input type="password" formControlName="password" placeholder="Password" required>
+    </label>
+    
+    
+    <button id="loginButton" type="submit" [disabled]="!profileForm.valid"><a routerLink="/Home">Login</a></button>
+   
+   
+   
+    <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+  </form>
+</body>

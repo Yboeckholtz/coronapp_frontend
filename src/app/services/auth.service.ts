@@ -1,32 +1,91 @@
-// import { AuthService } from "../auth.service"
-// import { HttpClient } from '@angular/common/http';
-// import { Observable, of } from 'rxjs';
+import {Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
-// export classs AuthService {
+@Injectable({
+  providedIn: 'root'
+})
 
-//     private readonly JWT_TOKEN = 'JWT_TOKEN';
-//     private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-//     private loggedUser: string;
 
-//     constructor(private http: HttpClient){}
 
-// login(user: { username: string, password: stirng }): Observable<boolean> {
-//     return this.http.post<any>('${config,apiUrl}/login', user)
-//     .pipe(
-//         tap(tokens => this.doLoginUser(user.username, tokens)),
-//         mapTo(true),
-//         catchError(error => {
-//             alert(error.error);
-//             return of(false);
-//         }));
-//     }
+export class AuthService {
+  private apiUrl = "https://coronapp-api.herokuapp.com/api";
+  private httpOptions;
+  constructor(private http: HttpClient) {
+    this.httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
+  }
 
-// // logout() {
 
-// // }
+  register(username: string,  password: string, firstName: string, lastName: string, dateOfBirth: Date) {
+    console.log("User " + username + " has been registered");
+    this.http.post<any>(this.apiUrl + '/register', {
+      username: username,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth
+    })
+      .subscribe((res) => {
+        localStorage.setItem("Token", res.token);
+      },
+        error => {
+        console.log(error);
+        })
+  }
+
+  loginUser(username: string, password: string){
+    console.log("User: " + username + " has been logged in");
+    this.http.post<any>(this.apiUrl + '/login', {username: username, password: password})
+      .subscribe((res) => {
+          localStorage.setItem("Token", res.token);
+          localStorage.setItem("Username", username);
+        },
+        (error) => console.log(error)
+      );
+  }
+
+  getUser(username: string) {
+    this.http.get<any>(this.apiUrl)
+  }
+
+
+  logout() {
+    localStorage.removeItem("Token");
+    localStorage.removeItem("Username");
+
+  }
+
+  getToken() {
+    return localStorage.getItem("Token");
+  }
+
+  isAuthenticated() {
+    return localStorage.getItem("Token") !== null;
+  }
+}
+
+
+
+    // private readonly JWT_TOKEN = 'JWT_TOKEN';
+    // private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
+    // private loggedUser: string;
+
+    // constructor(private http: HttpClient){}
+
+    // login(user: { username: string, password: string }) {
+    //     this.http.post<any>('${config,apiUrl}/login', user)
+    //       .subscribe(res => {
+    //         localStorage.setItem('token', res.token);
+    //       });
+    //   }
+
+// logout() {
+
+// }
 
 // isLoggedIn() {
-
+//     return !!this.getJwtToken();
 // }
 
 // refreshToken() {
@@ -39,7 +98,7 @@
 // }
 
 // getJwtToken(){
-
+//     return localStorage.getItem(this.JWT_TOKEN);
 // }
 
 // private doLoginUser(username: string, tokens: Tokens){
